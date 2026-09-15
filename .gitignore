@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Environment variables / secrets
+.env
+.env.*
+
+# Uploaded user files
+uploads/*
+!uploads/.gitkeep
+
+# Generated reports
+*.pdf
+
+# Flask
+instance/
+
+# IDE / editor
+.vscode/
+.idea/
+
+# Operating system
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+# Deployment/local artifacts
+*.pyc
+Interview_Report.pdf
