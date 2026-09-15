@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AI Interview Dashboard</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='style.css') }}">
+
+<style>
+
+/* =========================================
+   PAGE
+========================================= */
+
+body{
+    background:#f4f7fb;
+}
+
+.container{
+    max-width:1000px;
+    margin:auto;
+    padding-bottom:40px;
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.result-header{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.result-header h1{
+    color:#1e3c72;
+    margin-bottom:8px;
+}
+
+.result-header p{
+    color:#64748b;
+}
+
+/* =========================================
+   OVERALL SCORE
+========================================= */
+
+.score-section{
+
+    background:
+        linear-gradient(
+            135deg,
+            #0f172a,
+            #1e3c72
+        );
+
+    color:white;
+
+    padding:35px 20px;
+
+    border-radius:22px;
+
+    text-align:center;
+
+    box-shadow:
+        0 10px 30px rgba(15,23,42,0.20);
+
+    margin-bottom:25px;
+}
+
+.score-label{
+
+    font-size:15px;
+
+    color:#cbd5e1;
+
+    margin-bottom:10px;
+}
+
+.score-box{
+
+    width:180px;
+
+    height:180px;
+
+    margin:10px auto 20px;
+
+    border-radius:50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #00c6ff
+        );
+
+    color:white;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:40px;
+
+    font-weight:bold;
+
+    box-shadow:
+        0 0 0 8px rgba(255,255,255,0.08),
+        0 0 35px rgba(0,198,255,0.35);
+}
+
+.performance-title{
+
+    font-size:24px;
+
+    margin:5px 0 8px;
+}
+
+.performance-description{
+
+    max-width:600px;
+
+    margin:auto;
+
+    color:#dbeafe;
+
+    line-height:1.6;
+}
+
+/* =========================================
+   SUMMARY CARDS
+========================================= */
+
+.summary-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:18px;
+
+    margin-bottom:25px;
+}
+
+.summary-card{
+
+    background:white;
+
+    padding:22px;
+
+    border-radius:16px;
+
+    text-align:center;
+
+    box-shadow:
+        0 5px 18px rgba(0,0,0,0.07);
+
+    border:1px solid #e5e7eb;
+}
+
+.summary-icon{
+
+    font-size:30px;
+
+    margin-bottom:8px;
+}
+
+.summary-card h3{
+
+    margin:5px 0;
+
+    color:#334155;
+
+    font-size:16px;
+}
+
+.summary-score{
+
+    font-size:30px;
+
+    font-weight:bold;
+
+    color:#2563eb;
+}
+
+/* =========================================
+   ANALYTICS CARD
+========================================= */
+
+.card{
+
+    background:#fff;
+
+    padding:25px;
+
+    border-radius:18px;
+
+    box-shadow:
+        0 5px 18px rgba(0,0,0,0.07);
+
+    margin-bottom:25px;
+
+    text-align:left;
+
+    border:1px solid #e5e7eb;
+}
+
+.card-title{
+
+    color:#1e3c72;
+
+    margin-top:0;
+
+    margin-bottom:22px;
+
+    font-size:22px;
+}
+
+/* =========================================
+   METRIC
+========================================= */
+
+.metric{
+
+    margin-bottom:22px;
+}
+
+.metric-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:8px;
+
+    font-weight:bold;
+
+    color:#334155;
+}
+
+.progress{
+
+    width:100%;
+
+    height:14px;
+
+    background:#e2e8f0;
+
+    border-radius:20px;
+
+    overflow:hidden;
+}
+
+.bar{
+
+    height:100%;
+
+    background:
+        linear-gradient(
+            to right,
+            #2563eb,
+            #00c6ff
+        );
+
+    color:white;
+
+    text-align:right;
+
+    padding-right:8px;
+
+    box-sizing:border-box;
+
+    font-size:11px;
+
+    line-height:14px;
+
+    transition:
+        width 0.7s ease;
+}
+
+/* =========================================
+   FEEDBACK GRID
+========================================= */
+
+.feedback-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:20px;
+
+    margin-bottom:25px;
+}
+
+.feedback-card{
+
+    background:white;
+
+    padding:25px;
+
+    border-radius:18px;
+
+    box-shadow:
+        0 5px 18px rgba(0,0,0,0.07);
+
+    border:1px solid #e5e7eb;
+}
+
+.feedback-card h2{
+
+    margin-top:0;
+
+    font-size:20px;
+}
+
+.strength-title{
+
+    color:#15803d;
+}
+
+.improve-title{
+
+    color:#d97706;
+}
+
+.feedback-card ul{
+
+    margin-top:15px;
+
+    padding-left:20px;
+}
+
+.feedback-card li{
+
+    margin-bottom:12px;
+
+    line-height:1.5;
+
+    color:#475569;
+}
+
+/* =========================================
+   FINAL ASSESSMENT
+========================================= */
+
+.assessment{
+
+    background:
+        linear-gradient(
+            135deg,
+            #eff6ff,
+            #ecfeff
+        );
+
+    border-left:5px solid #2563eb;
+
+    padding:22px;
+
+    border-radius:14px;
+
+    margin-bottom:25px;
+}
+
+.assessment h2{
+
+    margin-top:0;
+
+    color:#1e3c72;
+}
+
+.assessment p{
+
+    color:#475569;
+
+    line-height:1.7;
+
+    margin-bottom:0;
+}
+
+/* =========================================
+   ACTION BUTTONS
+========================================= */
+
+.actions{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:15px;
+
+    margin-top:20px;
+}
+
+.action-button{
+
+    display:block;
+
+    width:100%;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:11px;
+
+    color:white;
+
+    font-size:17px;
+
+    font-weight:bold;
+
+    text-decoration:none;
+
+    text-align:center;
+
+    cursor:pointer;
+
+    box-sizing:border-box;
+
+    transition:0.3s;
+}
+
+.pdf-button{
+
+    background:#2563eb;
+}
+
+.pdf-button:hover{
+
+    background:#1d4ed8;
+
+    transform:translateY(-2px);
+}
+
+.new-button{
+
+    background:#0f766e;
+}
+
+.new-button:hover{
+
+    background:#115e59;
+
+    transform:translateY(-2px);
+}
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.footer{
+
+    text-align:center;
+
+    margin-top:30px;
+
+    color:#94a3b8;
+
+    font-size:13px;
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media(max-width:750px){
+
+    .summary-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .feedback-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .actions{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .score-box{
+
+        width:150px;
+
+        height:150px;
+
+        font-size:34px;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+<!-- =========================================
+     HEADER
+========================================= -->
+
+<div class="result-header">
+
+    <h1>🎉 Interview Completed</h1>
+
+    <p>
+        Your personalized interview performance dashboard
+    </p>
+
+</div>
+
+
+<!-- =========================================
+     OVERALL SCORE
+========================================= -->
+
+<div class="score-section">
+
+    <div class="score-label">
+        OVERALL PERFORMANCE
+    </div>
+
+
+    <div class="score-box">
+
+        {{ score }}/100
+
+    </div>
+
+
+    {% if score >= 80 %}
+
+        <h2 class="performance-title">
+            🏆 Excellent Performance
+        </h2>
+
+        <p class="performance-description">
+            Excellent communication and technical performance.
+            You are showing strong interview readiness.
+        </p>
+
+    {% elif score >= 60 %}
+
+        <h2 class="performance-title">
+            👍 Good Performance
+        </h2>
+
+        <p class="performance-description">
+            Good overall performance. Continue improving
+            your technical knowledge and answer quality.
+        </p>
+
+    {% elif score >= 40 %}
+
+        <h2 class="performance-title">
+            📈 Average Performance
+        </h2>
+
+        <p class="performance-description">
+            You have a good starting point. More practice
+            can improve your confidence and interview skills.
+        </p>
+
+    {% else %}
+
+        <h2 class="performance-title">
+            ⚠️ Needs Improvement
+        </h2>
+
+        <p class="performance-description">
+            Keep practicing mock interviews and focus on
+            communication, technical concepts, confidence
+            and answer quality.
+        </p>
+
+    {% endif %}
+
+</div>
+
+
+<!-- =========================================
+     QUICK SUMMARY
+========================================= -->
+
+<div class="summary-grid">
+
+
+    <div class="summary-card">
+
+        <div class="summary-icon">
+            💬
+        </div>
+
+        <h3>
+            Communication
+        </h3>
+
+        <div class="summary-score">
+            {{ communication }}/100
+        </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+        <div class="summary-icon">
+            💻
+        </div>
+
+        <h3>
+            Technical Knowledge
+        </h3>
+
+        <div class="summary-score">
+            {{ technical }}/100
+        </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+        <div class="summary-icon">
+            🎤
+        </div>
+
+        <h3>
+            Confidence
+        </h3>
+
+        <div class="summary-score">
+            {{ confidence }}/100
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<!-- =========================================
+     PERFORMANCE ANALYTICS
+========================================= -->
+
+<div class="card">
+
+    <h2 class="card-title">
+        📊 Performance Analytics
+    </h2>
+
+
+    <!-- COMMUNICATION -->
+
+    <div class="metric">
+
+        <div class="metric-header">
+
+            <span>
+                💬 Communication
+            </span>
+
+            <span>
+                {{ communication }}/100
+            </span>
+
+        </div>
+
+
+        <div class="progress">
+
+            <div
+                class="bar"
+                style="width:{{ communication }}%;">
+
+                {{ communication }}%
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- TECHNICAL -->
+
+    <div class="metric">
+
+        <div class="metric-header">
+
+            <span>
+                💻 Technical Knowledge
+            </span>
+
+            <span>
+                {{ technical }}/100
+            </span>
+
+        </div>
+
+
+        <div class="progress">
+
+            <div
+                class="bar"
+                style="width:{{ technical }}%;">
+
+                {{ technical }}%
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- CONFIDENCE -->
+
+    <div class="metric">
+
+        <div class="metric-header">
+
+            <span>
+                🎤 Confidence
+            </span>
+
+            <span>
+                {{ confidence }}/100
+            </span>
+
+        </div>
+
+
+        <div class="progress">
+
+            <div
+                class="bar"
+                style="width:{{ confidence }}%;">
+
+                {{ confidence }}%
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ANSWER QUALITY -->
+
+    <div class="metric">
+
+        <div class="metric-header">
+
+            <span>
+                📝 Answer Quality
+            </span>
+
+            <span>
+                {{ score }}/100
+            </span>
+
+        </div>
+
+
+        <div class="progress">
+
+            <div
+                class="bar"
+                style="width:{{ score }}%;">
+
+                {{ score }}%
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================
+     FEEDBACK
+========================================= -->
+
+<div class="feedback-grid">
+
+
+    <!-- STRENGTHS -->
+
+    <div class="feedback-card">
+
+        <h2 class="strength-title">
+            💪 Your Strengths
+        </h2>
+
+
+        <ul>
+
+            {% for item in strengths %}
+
+            <li>
+                {{ item }}
+            </li>
+
+            {% endfor %}
+
+        </ul>
+
+    </div>
+
+
+    <!-- IMPROVEMENTS -->
+
+    <div class="feedback-card">
+
+        <h2 class="improve-title">
+            📈 Areas to Improve
+        </h2>
+
+
+        <ul>
+
+            {% for item in improvements %}
+
+            <li>
+                {{ item }}
+            </li>
+
+            {% endfor %}
+
+        </ul>
+
+    </div>
+
+
+</div>
+
+
+<!-- =========================================
+     FINAL ASSESSMENT
+========================================= -->
+
+<div class="assessment">
+
+    <h2>
+        🎯 Final Assessment
+    </h2>
+
+
+    {% if score >= 80 %}
+
+    <p>
+        You demonstrated strong interview performance.
+        Continue practicing to maintain your technical
+        knowledge and communication skills.
+    </p>
+
+
+    {% elif score >= 60 %}
+
+    <p>
+        You demonstrated a good foundation. Focus on
+        strengthening technical concepts and providing
+        more structured answers with practical examples.
+    </p>
+
+
+    {% elif score >= 40 %}
+
+    <p>
+        You have a foundation to build on. Practice
+        answering questions clearly, improve your
+        technical explanations, and work on confidence.
+    </p>
+
+
+    {% else %}
+
+    <p>
+        More interview practice is recommended. Focus on
+        communication, technical concepts, answer quality
+        and confidence before attending real interviews.
+    </p>
+
+    {% endif %}
+
+</div>
+
+
+<!-- =========================================
+     ACTIONS
+========================================= -->
+
+<div class="actions">
+
+
+    <a
+        href="/download_report"
+        class="action-button pdf-button">
+
+        📄 Download PDF Report
+
+    </a>
+
+
+    <a
+        href="/"
+        class="action-button new-button">
+
+        🔄 Start New Interview
+
+    </a>
+
+
+</div>
+
+
+<!-- =========================================
+     FOOTER
+========================================= -->
+
+<div class="footer">
+
+    🤖 AI Mock Interview Coach
+    <br>
+    Practice • Improve • Succeed
+
+</div>
+
+
+</div>
+
+</body>
+
+</html>

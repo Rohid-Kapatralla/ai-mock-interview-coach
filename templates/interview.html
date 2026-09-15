@@ -1,0 +1,1914 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AI Mock Interview</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='style.css') }}">
+
+<style>
+
+/* =========================================
+   PAGE
+========================================= */
+
+body{
+    background:#f4f7fb;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.interview-header{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.interview-header h1{
+    color:#1e3c72;
+    margin-bottom:8px;
+}
+
+.interview-header p{
+    color:#64748b;
+}
+
+/* =========================================
+   AI INTERVIEWER
+========================================= */
+
+.interviewer-box{
+    background:linear-gradient(135deg,#0f172a,#1e3c72);
+    color:white;
+    padding:28px;
+    border-radius:20px;
+    text-align:center;
+    margin:25px 0;
+
+    box-shadow:
+        0 10px 30px rgba(15,23,42,0.20);
+}
+
+.interviewer-avatar{
+    width:82px;
+    height:82px;
+
+    margin:0 auto 12px;
+
+    border-radius:50%;
+
+    background:linear-gradient(
+        135deg,
+        #4facfe,
+        #00f2fe
+    );
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:42px;
+
+    box-shadow:
+        0 0 25px rgba(79,172,254,0.45);
+
+    transition:0.3s;
+}
+
+/* Avatar speaking animation */
+
+.interviewer-avatar.speaking{
+
+    transform:scale(1.08);
+
+    box-shadow:
+        0 0 0 8px rgba(79,172,254,0.15),
+        0 0 35px rgba(79,172,254,0.65);
+
+}
+
+/* Avatar listening animation */
+
+.interviewer-avatar.listening{
+
+    transform:scale(1.05);
+
+    box-shadow:
+        0 0 0 8px rgba(124,58,237,0.15),
+        0 0 35px rgba(124,58,237,0.65);
+
+}
+
+.interviewer-box h2{
+    margin:8px 0;
+}
+
+.interviewer-box p{
+    margin:5px 0;
+    color:#dbeafe;
+}
+
+.voice-status{
+    margin-top:15px;
+
+    font-size:14px;
+
+    color:#cbd5e1;
+
+    min-height:20px;
+}
+
+/* =========================================
+   PROGRESS
+========================================= */
+
+.progress-section{
+    background:white;
+
+    padding:18px;
+
+    border-radius:15px;
+
+    box-shadow:
+        0 4px 15px rgba(0,0,0,0.06);
+
+    margin-bottom:20px;
+}
+
+.progress-top{
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:10px;
+
+    font-weight:bold;
+
+    color:#334155;
+}
+
+.progress{
+    width:100%;
+
+    height:12px;
+
+    background:#e2e8f0;
+
+    border-radius:20px;
+
+    overflow:hidden;
+}
+
+.progress-bar{
+    width:20%;
+
+    height:100%;
+
+    background:
+        linear-gradient(
+            to right,
+            #4facfe,
+            #00f2fe
+        );
+
+    transition:
+        width 0.4s ease;
+}
+
+/* =========================================
+   SKILLS
+========================================= */
+
+.skills-box{
+    background:#ffffff;
+
+    padding:20px;
+
+    border-radius:15px;
+
+    margin-bottom:20px;
+
+    border-left:5px solid #2563eb;
+
+    box-shadow:
+        0 4px 15px rgba(0,0,0,0.05);
+}
+
+.skills-box h3{
+    margin-top:0;
+
+    color:#1e3c72;
+}
+
+.skills-box ul{
+    list-style:none;
+
+    padding-left:0;
+
+    margin-bottom:0;
+}
+
+.skills-box li{
+    padding:6px 0;
+
+    font-size:16px;
+}
+
+/* =========================================
+   TIMER
+========================================= */
+
+#timer{
+
+    background:#2563eb;
+
+    color:white;
+
+    padding:14px;
+
+    border-radius:12px;
+
+    text-align:center;
+
+    font-size:20px;
+
+    font-weight:bold;
+
+    margin-bottom:20px;
+
+    box-shadow:
+        0 5px 15px rgba(37,99,235,0.25);
+}
+
+/* =========================================
+   QUESTION CARD
+========================================= */
+
+.question-card{
+
+    display:none;
+
+    background:white;
+
+    padding:28px;
+
+    border-radius:18px;
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,0.08);
+
+    border:1px solid #e5e7eb;
+
+    animation:
+        fadeIn 0.35s ease;
+}
+
+.question-card.active{
+
+    display:block;
+}
+
+@keyframes fadeIn{
+
+    from{
+        opacity:0;
+        transform:translateY(10px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+
+.question-number{
+
+    display:inline-block;
+
+    background:#dbeafe;
+
+    color:#1d4ed8;
+
+    padding:7px 12px;
+
+    border-radius:20px;
+
+    font-size:14px;
+
+    font-weight:bold;
+
+    margin-bottom:12px;
+}
+
+.question-card h3{
+
+    color:#1e293b;
+
+    font-size:22px;
+
+    line-height:1.5;
+
+    margin-top:5px;
+
+    margin-bottom:20px;
+}
+
+/* =========================================
+   VOICE BUTTONS
+========================================= */
+
+.voice-controls{
+
+    display:flex;
+
+    gap:12px;
+
+    margin-bottom:15px;
+
+    flex-wrap:wrap;
+}
+
+.voice-btn{
+
+    flex:1;
+
+    min-width:200px;
+
+    padding:13px;
+
+    border:none;
+
+    border-radius:10px;
+
+    color:white;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:0.3s;
+}
+
+.listen-btn{
+
+    background:#0f766e;
+}
+
+.listen-btn:hover{
+
+    background:#115e59;
+
+    transform:translateY(-2px);
+}
+
+.mic-btn{
+
+    background:#7c3aed;
+}
+
+.mic-btn:hover{
+
+    background:#6d28d9;
+
+    transform:translateY(-2px);
+}
+
+.mic-btn.listening{
+
+    background:#dc2626;
+
+    animation:
+        pulse 1.2s infinite;
+}
+
+@keyframes pulse{
+
+    0%{
+        box-shadow:
+            0 0 0 0 rgba(220,38,38,0.6);
+    }
+
+    70%{
+        box-shadow:
+            0 0 0 12px rgba(220,38,38,0);
+    }
+
+    100%{
+        box-shadow:
+            0 0 0 0 rgba(220,38,38,0);
+    }
+
+}
+
+/* =========================================
+   TEXTAREA
+========================================= */
+
+textarea{
+
+    width:100%;
+
+    min-height:150px;
+
+    box-sizing:border-box;
+
+    padding:16px;
+
+    border-radius:12px;
+
+    border:1px solid #cbd5e1;
+
+    font-size:16px;
+
+    font-family:Arial,sans-serif;
+
+    resize:vertical;
+
+    outline:none;
+
+    transition:0.3s;
+}
+
+textarea:focus{
+
+    border-color:#2563eb;
+
+    box-shadow:
+        0 0 0 3px rgba(37,99,235,0.12);
+}
+
+.answer-hint{
+
+    font-size:13px;
+
+    color:#64748b;
+
+    margin-top:8px;
+}
+
+/* =========================================
+   NAVIGATION
+========================================= */
+
+.navigation{
+
+    display:flex;
+
+    gap:12px;
+
+    margin-top:25px;
+}
+
+.nav-btn{
+
+    flex:1;
+
+    padding:14px;
+
+    border:none;
+
+    border-radius:10px;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:0.3s;
+}
+
+.previous-btn{
+
+    background:#e2e8f0;
+
+    color:#334155;
+}
+
+.previous-btn:hover{
+
+    background:#cbd5e1;
+}
+
+.next-btn{
+
+    background:#2563eb;
+
+    color:white;
+}
+
+.next-btn:hover{
+
+    background:#1d4ed8;
+}
+
+.submit-btn{
+
+    display:none;
+
+    width:100%;
+
+    padding:16px;
+
+    font-size:18px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#16a34a;
+
+    color:white;
+
+    cursor:pointer;
+
+    font-weight:bold;
+
+    margin-top:20px;
+
+    transition:0.3s;
+}
+
+.submit-btn:hover{
+
+    background:#15803d;
+
+    transform:scale(1.01);
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media(max-width:600px){
+
+    .question-card{
+        padding:20px;
+    }
+
+    .question-card h3{
+        font-size:19px;
+    }
+
+    .voice-btn{
+        min-width:100%;
+    }
+
+    .navigation{
+        flex-direction:column;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+<!-- =========================================
+     HEADER
+========================================= -->
+
+<div class="interview-header">
+
+    <h1>🤖 AI Mock Interview</h1>
+
+    <p>
+        Welcome to your personalized interview session.
+        Answer each question carefully.
+    </p>
+
+</div>
+
+
+<!-- =========================================
+     AI INTERVIEWER
+========================================= -->
+
+<div class="interviewer-box">
+
+    <div
+        class="interviewer-avatar"
+        id="interviewerAvatar">
+
+        🤖
+
+    </div>
+
+    <h2>AI Interviewer</h2>
+
+    <p>
+        I will guide you through your mock interview.
+    </p>
+
+    <p>
+        Listen to each question and answer using your voice or keyboard.
+    </p>
+
+    <div
+        class="voice-status"
+        id="voiceStatus">
+
+        🎙️ AI Interviewer is getting ready...
+
+    </div>
+
+</div>
+
+
+<!-- =========================================
+     PROGRESS
+========================================= -->
+
+<div class="progress-section">
+
+    <div class="progress-top">
+
+        <span id="questionCounter">
+
+            Question 1 of {{ questions|length }}
+
+        </span>
+
+        <span id="progressPercent">
+
+            20%
+
+        </span>
+
+    </div>
+
+
+    <div class="progress">
+
+        <div
+            class="progress-bar"
+            id="progressBar">
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================
+     DETECTED SKILLS
+========================================= -->
+
+<div class="skills-box">
+
+    <h3>📌 Detected Skills</h3>
+
+    {% if skills %}
+
+    <ul>
+
+        {% for skill in skills %}
+
+        <li>
+            ✅ {{ skill }}
+        </li>
+
+        {% endfor %}
+
+    </ul>
+
+    {% else %}
+
+    <p>
+        No skills detected.
+    </p>
+
+    {% endif %}
+
+</div>
+
+
+<!-- =========================================
+     TIMER
+========================================= -->
+
+<div id="timer">
+
+    ⏱ Time: 00:00
+
+</div>
+
+
+<!-- =========================================
+     INTERVIEW FORM
+========================================= -->
+
+<form
+    action="/result"
+    method="POST"
+    id="interviewForm">
+
+
+    <!-- =====================================
+         QUESTIONS
+    ====================================== -->
+
+    {% for question in questions %}
+
+    <div
+        class="question-card {% if loop.first %}active{% endif %}"
+        data-question="{{ loop.index0 }}">
+
+        <div class="question-number">
+
+            Question {{ loop.index }}
+
+        </div>
+
+
+        <h3>
+
+            {{ question }}
+
+        </h3>
+
+
+        <!-- =================================
+             VOICE CONTROLS
+        ================================== -->
+
+        <div class="voice-controls">
+
+
+            <!-- LISTEN -->
+
+            <button
+                type="button"
+                class="voice-btn listen-btn"
+                onclick="speakQuestion(this)">
+
+                🔊 Listen to Question
+
+            </button>
+
+
+            <!-- MICROPHONE -->
+
+            <button
+                type="button"
+                class="voice-btn mic-btn"
+                onclick="startVoiceAnswer(this)">
+
+                🎤 Answer with Voice
+
+            </button>
+
+        </div>
+
+
+        <!-- =================================
+             ANSWER
+        ================================== -->
+
+        <textarea
+            name="q{{ loop.index }}"
+            placeholder="Type your answer here or use the microphone..."
+            {% if not loop.first %}disabled{% endif %}
+            {% if loop.first %}required{% endif %}></textarea>
+
+
+        <div class="answer-hint">
+
+            💡 Tip: Give a clear answer and include practical examples when possible.
+
+        </div>
+
+
+        <!-- =================================
+             NAVIGATION
+        ================================== -->
+
+        <div class="navigation">
+
+
+            <button
+                type="button"
+                class="nav-btn previous-btn"
+                onclick="previousQuestion()">
+
+                ⬅️ Previous
+
+            </button>
+
+
+            <button
+                type="button"
+                class="nav-btn next-btn"
+                onclick="nextQuestion()">
+
+                Next ➡️
+
+            </button>
+
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+
+    <!-- =====================================
+         SUBMIT
+    ====================================== -->
+
+    <button
+        type="submit"
+        class="submit-btn"
+        id="submitButton">
+
+        🚀 Submit Interview
+
+    </button>
+
+
+</form>
+
+</div>
+
+
+<script>
+
+/* =================================================
+   QUESTION SYSTEM
+================================================= */
+
+
+/* Get all question cards */
+
+const questionCards =
+    document.querySelectorAll(".question-card");
+
+
+/* Total questions */
+
+const totalQuestions =
+    questionCards.length;
+
+
+/* Current question */
+
+let currentQuestion = 0;
+
+
+/* =================================================
+   UPDATE QUESTION
+================================================= */
+
+function updateQuestion(){
+
+    /* Stop microphone */
+
+    stopVoiceRecognition();
+
+
+    /* Stop current speech */
+
+    window.speechSynthesis.cancel();
+
+
+    /* Update cards */
+
+    questionCards.forEach(function(card,index){
+
+        const textarea =
+            card.querySelector("textarea");
+
+
+        if(index === currentQuestion){
+
+            card.classList.add("active");
+
+            textarea.disabled = false;
+
+            textarea.required = true;
+
+        }
+        else{
+
+            card.classList.remove("active");
+
+            textarea.disabled = true;
+
+            textarea.required = false;
+
+        }
+
+    });
+
+
+    /* Calculate progress */
+
+    const progress =
+        ((currentQuestion + 1) / totalQuestions) * 100;
+
+
+    /* Progress bar */
+
+    document.getElementById("progressBar").style.width =
+        progress + "%";
+
+
+    /* Percentage */
+
+    document.getElementById("progressPercent").innerText =
+        Math.round(progress) + "%";
+
+
+    /* Question number */
+
+    document.getElementById("questionCounter").innerText =
+
+        "Question " +
+
+        (currentQuestion + 1) +
+
+        " of " +
+
+        totalQuestions;
+
+
+    /* Current card */
+
+    const currentCard =
+        questionCards[currentQuestion];
+
+
+    const previousButton =
+        currentCard.querySelector(".previous-btn");
+
+
+    const nextButton =
+        currentCard.querySelector(".next-btn");
+
+
+    /* Previous button */
+
+    if(currentQuestion === 0){
+
+        previousButton.style.display =
+            "none";
+
+    }
+    else{
+
+        previousButton.style.display =
+            "block";
+
+    }
+
+
+    /* Final question */
+
+    if(currentQuestion === totalQuestions - 1){
+
+        nextButton.style.display =
+            "none";
+
+        document.getElementById("submitButton").style.display =
+            "block";
+
+    }
+    else{
+
+        nextButton.style.display =
+            "block";
+
+        document.getElementById("submitButton").style.display =
+            "none";
+
+    }
+
+
+    /* Reset status */
+
+    document.getElementById("voiceStatus").innerText =
+        "🎙️ AI Interviewer is ready.";
+
+}
+
+
+/* =================================================
+   NEXT QUESTION
+================================================= */
+
+function nextQuestion(){
+
+    const currentTextarea =
+        questionCards[currentQuestion]
+        .querySelector("textarea");
+
+
+    /* Check answer */
+
+    if(currentTextarea.value.trim() === ""){
+
+        alert(
+            "Please answer this question before moving to the next question."
+        );
+
+        currentTextarea.focus();
+
+        return;
+
+    }
+
+
+    /* Move next */
+
+    if(currentQuestion < totalQuestions - 1){
+
+        currentQuestion++;
+
+        updateQuestion();
+
+
+        /*
+           Automatically speak the new question
+           after a short delay.
+
+           The delay gives the browser time
+           to display the new question first.
+        */
+
+        setTimeout(function(){
+
+            autoSpeakCurrentQuestion();
+
+        },500);
+
+    }
+
+}
+
+
+/* =================================================
+   PREVIOUS QUESTION
+================================================= */
+
+function previousQuestion(){
+
+    if(currentQuestion > 0){
+
+        currentQuestion--;
+
+        updateQuestion();
+
+
+        /*
+           Automatically read previous question.
+        */
+
+        setTimeout(function(){
+
+            autoSpeakCurrentQuestion();
+
+        },500);
+
+    }
+
+}
+
+
+/* =================================================
+   TEXT TO SPEECH
+================================================= */
+
+function speakQuestion(button){
+
+    /* Stop any previous speech */
+
+    window.speechSynthesis.cancel();
+
+
+    /* Current question */
+
+    const questionBox =
+        button.closest(".question-card");
+
+
+    const questionText =
+        questionBox.querySelector("h3").innerText;
+
+
+    /* Create speech */
+
+    const speech =
+        new SpeechSynthesisUtterance(questionText);
+
+
+    /* Language */
+
+    speech.lang =
+        "en-IN";
+
+
+    /* Interview speed */
+
+    speech.rate =
+        0.9;
+
+
+    speech.pitch =
+        1;
+
+
+    /* Avatar */
+
+    const avatar =
+        document.getElementById(
+            "interviewerAvatar"
+        );
+
+
+    avatar.classList.add(
+        "speaking"
+    );
+
+
+    /* Status */
+
+    document.getElementById("voiceStatus").innerText =
+        "🔊 AI Interviewer is speaking...";
+
+
+    /* Button */
+
+    button.innerText =
+        "🔊 Speaking...";
+
+
+    /* Speech complete */
+
+    speech.onend =
+        function(){
+
+            button.innerText =
+                "🔊 Listen to Question";
+
+
+            avatar.classList.remove(
+                "speaking"
+            );
+
+
+            document.getElementById("voiceStatus").innerText =
+                "🎙️ AI Interviewer is ready. You can answer now.";
+
+        };
+
+
+    /* Speech error */
+
+    speech.onerror =
+        function(){
+
+            button.innerText =
+                "🔊 Listen to Question";
+
+
+            avatar.classList.remove(
+                "speaking"
+            );
+
+
+            document.getElementById("voiceStatus").innerText =
+                "⚠️ Could not play the question.";
+
+        };
+
+
+    /* Speak */
+
+    window.speechSynthesis.speak(
+        speech
+    );
+
+}
+
+
+/* =================================================
+   AUTOMATIC QUESTION SPEECH
+================================================= */
+
+function autoSpeakCurrentQuestion(){
+
+    /*
+       Stop existing speech.
+    */
+
+    window.speechSynthesis.cancel();
+
+
+    /*
+       Get current question.
+    */
+
+    const currentCard =
+        questionCards[currentQuestion];
+
+
+    if(!currentCard){
+
+        return;
+
+    }
+
+
+    /*
+       Get question text.
+    */
+
+    const questionText =
+        currentCard.querySelector("h3").innerText;
+
+
+    /*
+       Create speech.
+    */
+
+    const speech =
+        new SpeechSynthesisUtterance(
+            questionText
+        );
+
+
+    /*
+       Indian English.
+    */
+
+    speech.lang =
+        "en-IN";
+
+
+    /*
+       Natural interview speed.
+    */
+
+    speech.rate =
+        0.9;
+
+
+    speech.pitch =
+        1;
+
+
+    /*
+       Avatar animation.
+    */
+
+    const avatar =
+        document.getElementById(
+            "interviewerAvatar"
+        );
+
+
+    avatar.classList.add(
+        "speaking"
+    );
+
+
+    /*
+       Status.
+    */
+
+    document.getElementById("voiceStatus").innerText =
+        "🔊 AI Interviewer is asking the question...";
+
+
+    /*
+       Speak.
+    */
+
+    speech.onend =
+        function(){
+
+            avatar.classList.remove(
+                "speaking"
+            );
+
+
+            document.getElementById("voiceStatus").innerText =
+                "🎙️ AI Interviewer is ready. You can answer now.";
+
+        };
+
+
+    speech.onerror =
+        function(){
+
+            avatar.classList.remove(
+                "speaking"
+            );
+
+
+            document.getElementById("voiceStatus").innerText =
+                "🎙️ AI Interviewer is ready.";
+
+        };
+
+
+    window.speechSynthesis.speak(
+        speech
+    );
+
+}
+
+
+/* =================================================
+   SPEECH RECOGNITION
+================================================= */
+
+
+/*
+   IMPORTANT:
+
+   Use a unique variable name so there is
+   no conflict with browser objects.
+*/
+
+const BrowserSpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+
+/* Active recognition */
+
+let activeRecognition =
+    null;
+
+
+/* Active button */
+
+let activeButton =
+    null;
+
+
+/* =================================================
+   START VOICE ANSWER
+================================================= */
+
+function startVoiceAnswer(button){
+
+    /*
+       Browser support.
+    */
+
+    if(!BrowserSpeechRecognition){
+
+        alert(
+            "Voice recognition is not supported by this browser. Please use Google Chrome or Microsoft Edge."
+        );
+
+        return;
+
+    }
+
+
+    /*
+       If already listening,
+       stop it.
+    */
+
+    if(activeRecognition){
+
+        stopVoiceRecognition();
+
+        return;
+
+    }
+
+
+    /*
+       Current question.
+    */
+
+    const questionBox =
+        button.closest(".question-card");
+
+
+    /*
+       Answer box.
+    */
+
+    const textarea =
+        questionBox.querySelector("textarea");
+
+
+    /*
+       Create recognition.
+    */
+
+    const recognition =
+        new BrowserSpeechRecognition();
+
+
+    /*
+       Language.
+    */
+
+    recognition.lang =
+        "en-IN";
+
+
+    /*
+       Continue listening.
+    */
+
+    recognition.continuous =
+        true;
+
+
+    /*
+       Show partial results.
+    */
+
+    recognition.interimResults =
+        true;
+
+
+    /*
+       Save active recognition.
+    */
+
+    activeRecognition =
+        recognition;
+
+
+    activeButton =
+        button;
+
+
+    /*
+       Button state.
+    */
+
+    button.innerText =
+        "🔴 Stop Listening";
+
+
+    button.classList.add(
+        "listening"
+    );
+
+
+    /*
+       Avatar.
+    */
+
+    const avatar =
+        document.getElementById(
+            "interviewerAvatar"
+        );
+
+
+    avatar.classList.add(
+        "listening"
+    );
+
+
+    /*
+       Status.
+    */
+
+    document.getElementById("voiceStatus").innerText =
+        "🎤 Listening... Speak your answer clearly.";
+
+
+    /*
+       Existing text.
+    */
+
+    let finalTranscript =
+        textarea.value.trim();
+
+
+    /*
+       Speech results.
+    */
+
+    recognition.onresult =
+        function(event){
+
+            let interimTranscript =
+                "";
+
+
+            for(
+                let i = event.resultIndex;
+                i < event.results.length;
+                i++
+            ){
+
+                const transcript =
+                    event.results[i][0].transcript;
+
+
+                if(
+                    event.results[i].isFinal
+                ){
+
+                    finalTranscript +=
+                        (
+                            finalTranscript
+                                ? " "
+                                : ""
+                        ) +
+                        transcript.trim();
+
+                }
+                else{
+
+                    interimTranscript +=
+                        transcript;
+
+                }
+
+            }
+
+
+            /*
+               Put speech into answer box.
+            */
+
+            textarea.value =
+                finalTranscript +
+                (
+                    interimTranscript
+                        ? " " + interimTranscript
+                        : ""
+                );
+
+        };
+
+
+    /*
+       Recognition started.
+    */
+
+    recognition.onstart =
+        function(){
+
+            document.getElementById("voiceStatus").innerText =
+                "🎤 Listening... Speak your answer.";
+
+        };
+
+
+    /*
+       Recognition ended.
+    */
+
+    recognition.onend =
+        function(){
+
+            avatar.classList.remove(
+                "listening"
+            );
+
+
+            if(
+                activeRecognition === recognition
+            ){
+
+                activeRecognition =
+                    null;
+
+
+                if(activeButton){
+
+                    activeButton.innerText =
+                        "🎤 Answer with Voice";
+
+
+                    activeButton.classList.remove(
+                        "listening"
+                    );
+
+                }
+
+
+                document.getElementById("voiceStatus").innerText =
+                    "✅ Answer captured. You can edit it if needed.";
+
+            }
+
+        };
+
+
+    /*
+       Recognition error.
+    */
+
+    recognition.onerror =
+        function(event){
+
+            console.log(
+                "Speech recognition error:",
+                event.error
+            );
+
+
+            avatar.classList.remove(
+                "listening"
+            );
+
+
+            if(
+                event.error === "not-allowed"
+            ){
+
+                alert(
+                    "Microphone permission was denied. Please allow microphone access in Chrome."
+                );
+
+            }
+            else if(
+                event.error === "no-speech"
+            ){
+
+                document.getElementById("voiceStatus").innerText =
+                    "⚠️ No speech detected. Please try again.";
+
+            }
+            else{
+
+                document.getElementById("voiceStatus").innerText =
+                    "⚠️ Voice recognition error: " +
+                    event.error;
+
+            }
+
+        };
+
+
+    /*
+       Start microphone.
+    */
+
+    try{
+
+        recognition.start();
+
+    }
+    catch(error){
+
+        console.error(
+            "Could not start speech recognition:",
+            error
+        );
+
+
+        activeRecognition =
+            null;
+
+
+        activeButton =
+            null;
+
+
+        button.innerText =
+            "🎤 Answer with Voice";
+
+
+        button.classList.remove(
+            "listening"
+        );
+
+
+        avatar.classList.remove(
+            "listening"
+        );
+
+
+        document.getElementById("voiceStatus").innerText =
+            "⚠️ Could not start microphone.";
+
+    }
+
+}
+
+
+/* =================================================
+   STOP VOICE RECOGNITION
+================================================= */
+
+function stopVoiceRecognition(){
+
+    if(activeRecognition){
+
+        try{
+
+            activeRecognition.stop();
+
+        }
+        catch(error){
+
+            console.log(error);
+
+        }
+
+
+        activeRecognition =
+            null;
+
+    }
+
+
+    if(activeButton){
+
+        activeButton.innerText =
+            "🎤 Answer with Voice";
+
+
+        activeButton.classList.remove(
+            "listening"
+        );
+
+    }
+
+
+    activeButton =
+        null;
+
+
+    const avatar =
+        document.getElementById(
+            "interviewerAvatar"
+        );
+
+
+    if(avatar){
+
+        avatar.classList.remove(
+            "listening"
+        );
+
+    }
+
+}
+
+
+/* =================================================
+   FORM SUBMISSION
+================================================= */
+
+document.getElementById(
+    "interviewForm"
+)
+.addEventListener(
+    "submit",
+    function(){
+
+        /*
+           Enable all answer boxes.
+
+           Disabled inputs are not sent
+           to Flask.
+        */
+
+        questionCards.forEach(
+            function(card){
+
+                const textarea =
+                    card.querySelector("textarea");
+
+
+                textarea.disabled =
+                    false;
+
+
+                textarea.required =
+                    true;
+
+            }
+        );
+
+
+        /* Stop voice */
+
+        stopVoiceRecognition();
+
+
+        /* Stop speech */
+
+        window.speechSynthesis.cancel();
+
+    }
+);
+
+
+/* =================================================
+   INITIAL PAGE SETUP
+================================================= */
+
+updateQuestion();
+
+
+/*
+   Automatically speak the first question
+   after the page loads.
+
+   Small delay helps the browser render
+   the interview page first.
+*/
+
+setTimeout(
+    function(){
+
+        autoSpeakCurrentQuestion();
+
+    },
+    1000
+);
+
+
+/* =================================================
+   TIMER
+================================================= */
+
+let seconds =
+    0;
+
+
+setInterval(
+    function(){
+
+        seconds++;
+
+
+        const minutes =
+            Math.floor(seconds / 60);
+
+
+        const secs =
+            seconds % 60;
+
+
+        document.getElementById(
+            "timer"
+        ).innerHTML =
+
+            "⏱ Time: " +
+
+            String(minutes)
+                .padStart(2,"0") +
+
+            ":" +
+
+            String(secs)
+                .padStart(2,"0");
+
+    },
+    1000
+);
+
+
+/* =================================================
+   PAGE CLEANUP
+================================================= */
+
+window.addEventListener(
+    "beforeunload",
+    function(){
+
+        window.speechSynthesis.cancel();
+
+        stopVoiceRecognition();
+
+    }
+);
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Resume</title>
+
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>📄 Upload Resume</h1>
+
+<p>Upload your resume to start the AI Mock Interview.</p>
+
+<form action="/upload" method="POST" enctype="multipart/form-data">
+
+<label><b>Select Resume (PDF)</b></label>
+
+<input type="file" name="resume" required>
+
+<label><b>Interview Type</b></label>
+
+<select name="interview_type">
+
+<option>HR Interview</option>
+
+<option>Technical Interview</option>
+
+<option>Behavioral Interview</option>
+
+</select>
+
+<label><b>Job Role</b></label>
+
+<input
+type="text"
+name="job_role"
+placeholder="Example: Software Engineer"
+required>
+
+<button type="submit">
+
+🚀 Start Interview
+
+</button>
+
+</form>
+
+</div>
+
+</body>
+</html>
