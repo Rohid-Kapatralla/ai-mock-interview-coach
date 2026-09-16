@@ -1,57 +1,92 @@
 # AI Mock Interview Coach
 
-A Flask-based mock interview practice platform that analyzes a candidate's resume, identifies relevant skills, generates role-specific interview questions, evaluates answers, and produces a downloadable performance report.
+A Flask-based mock interview practice platform that analyzes a candidate's resume, extracts relevant skills, generates personalized interview questions, evaluates answers, and produces a downloadable performance report.
 
-## Features
+## 🚀 Features
 
-- Upload candidate resume in PDF format
-- Extract skills from uploaded resumes
-- Select interview type and target role
-- Generate interview questions based on role, interview type, and detected skills
-- Evaluate submitted answers
-- Analyze communication, technical knowledge, confidence, and answer quality
-- Calculate an overall interview performance score
-- Generate downloadable interview performance reports in PDF format
-- Responsive web interface for interview practice
+- 📄 Upload and process resume PDFs
+- 🔍 Extract candidate skills from resumes
+- 🎯 Select interview type and job role
+- ❓ Generate interview questions based on the selected role and detected skills
+- 📝 Evaluate interview answers
+- 📊 Calculate interview performance scores
+- 📋 Evaluate communication, technical knowledge, confidence, and answer quality
+- 📥 Generate downloadable interview performance reports
+- 📱 Responsive and user-friendly web interface
+- 🌐 Production-ready Flask application with Gunicorn
 
-## Tech Stack
+## 🛠️ Tech Stack
 
-- **Language:** Python 3.13
-- **Backend:** Flask
-- **PDF Processing:** PyMuPDF
-- **PDF Report Generation:** ReportLab
-- **Frontend:** HTML5, CSS3
-- **Production Server:** Gunicorn
+### Programming Language
+- Python 3.13
 
-## How It Works
+### Backend
+- Flask
 
-1. Upload a resume in PDF format.
-2. The application extracts relevant skills from the resume.
-3. Select the interview type and target job role.
-4. The system generates interview questions based on the selected role and detected skills.
-5. Submit answers to the generated questions.
-6. The application evaluates the responses across multiple criteria.
-7. Review the interview performance results.
-8. Download the generated performance report as a PDF.
+### PDF Processing
+- PyMuPDF
 
-## Project Structure
+### PDF Report Generation
+- ReportLab
+
+### Frontend
+- HTML5
+- CSS3
+- Jinja2 Templates
+
+### Deployment
+- Gunicorn
+
+## 🔄 How It Works
+
+The application follows the following workflow:
+
+1. **Upload Resume**
+   - The candidate uploads their resume in PDF format.
+
+2. **Resume Processing**
+   - The application extracts text from the uploaded resume using PyMuPDF.
+
+3. **Skill Extraction**
+   - Relevant technical and professional skills are identified from the extracted resume content.
+
+4. **Interview Configuration**
+   - The candidate selects the interview type and target job role.
+
+5. **Question Generation**
+   - Interview questions are generated based on the selected interview type, job role, and detected candidate skills.
+
+6. **Answer Evaluation**
+   - Candidate responses are evaluated using the application's scoring logic.
+
+7. **Performance Analysis**
+   - The application evaluates areas such as:
+     - Communication
+     - Technical Knowledge
+     - Confidence
+     - Answer Quality
+
+8. **Performance Report**
+   - A downloadable PDF report is generated using ReportLab.
+
+## 📂 Project Structure
 
 ```text
-AI_Mock_Interview_Coach/
+ai-mock-interview-coach/
 │
 ├── app.py
 ├── requirements.txt
+├── README.md
 ├── .gitignore
-├── .python-version
 │
 ├── templates/
 │   ├── index.html
-│   ├── interview.html
-│   ├── result.html
-│   └── upload.html
+│   ├── ...
 │
 ├── static/
-│   └── style.css
+│   ├── css/
+│   ├── js/
+│   └── ...
 │
 └── uploads/
     └── .gitkeep
