@@ -2,6 +2,12 @@
 
 A Flask-based mock interview practice platform that analyzes a candidate's resume, extracts relevant skills, generates personalized interview questions, evaluates answers, and produces a downloadable performance report.
 
+## 🌐 Live Demo
+
+Try the application here:
+
+https://ai-mock-interview-coach-9371.onrender.com
+
 ## 🚀 Features
 
 - 📄 Upload and process resume PDFs
