@@ -54,17 +54,20 @@ SKILLS_DB = [
 
 def extract_skills(resume_text):
 
+    import re
+
     skills_found = []
 
     resume_lower = resume_text.lower()
 
     for skill in SKILLS_DB:
 
-        if skill.lower() in resume_lower:
+        pattern = r"\b" + re.escape(skill.lower()) + r"\b"
+
+        if re.search(pattern, resume_lower):
             skills_found.append(skill)
 
     return skills_found
-
 
 # =========================================================
 # GENERATE INTERVIEW QUESTIONS
